@@ -1,0 +1,6 @@
+com\careerready\CareerReadyApplication.class
+com\careerready\service\GroqService.class
+com\careerready\model\ChatRequest.class
+com\careerready\model\ChatResponse.class
+com\careerready\controller\ChatController.class
+com\careerready\model\ChatResponse$ChatResponseBuilder.class
