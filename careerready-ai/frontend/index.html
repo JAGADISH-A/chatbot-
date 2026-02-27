@@ -515,10 +515,209 @@
                 padding: 0 1rem;
             }
         }
+
+        /* Auth Overlay */
+        #auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-deep);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .auth-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: var(--radius-curved);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-float);
+        }
+
+        .auth-input {
+            width: 100%;
+            background: var(--bg-accent);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: var(--radius-sharp);
+            color: var(--text-high);
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .auth-input:focus {
+            border-color: var(--brand-primary);
+        }
+
+        /* Onboarding */
+        #onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .onboarding-step {
+            display: none;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .onboarding-step.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tone-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tone-opt {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-curved);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .tone-opt:hover,
+        .tone-opt.selected {
+            border-color: var(--brand-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Suggested Questions */
+        .suggested-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .suggested-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--brand-primary);
+            color: var(--brand-primary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .suggested-btn:hover {
+            background: var(--brand-primary);
+            color: white;
+        }
+
+        /* Settings Toggle */
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding: 0.5rem;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sharp);
+        }
     </style>
 </head>
 
-<body>
+<body class="dark-mode">
+    <!-- Auth Overlay -->
+    <div id="auth-overlay">
+        <div class="brand-text" style="font-size: 2.5rem; color: var(--text-high); margin-bottom: 1rem;">
+            EXECUTIVE<span style="color: var(--brand-primary)">ADVISOR</span>
+        </div>
+        <div class="auth-card" id="login-form">
+            <h2 style="margin-bottom: 1.5rem;">Sign In</h2>
+            <input type="text" id="auth-user" class="auth-input" placeholder="Username">
+            <input type="password" id="auth-pass" class="auth-input" placeholder="Password">
+            <button class="action-btn" onclick="handleAuth('signin')">Sign In</button>
+            <p style="font-size: 0.8rem; color: var(--text-med); text-align: center; margin-top: 1rem;">
+                No account? <a href="#" style="color: var(--brand-primary)" onclick="toggleAuthMode(true)">Sign Up</a>
+            </p>
+        </div>
+        <div class="auth-card" id="signup-form" style="display: none;">
+            <h2 style="margin-bottom: 1.5rem;">Create Account</h2>
+            <input type="text" id="reg-user" class="auth-input" placeholder="Username">
+            <input type="password" id="reg-pass" class="auth-input" placeholder="Password">
+            <button class="action-btn" onclick="handleAuth('signup')">Sign Up</button>
+            <p style="font-size: 0.8rem; color: var(--text-med); text-align: center; margin-top: 1rem;">
+                Already have an account? <a href="#" style="color: var(--brand-primary)"
+                    onclick="toggleAuthMode(false)">Sign In</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Onboarding Overlay -->
+    <div id="onboarding-overlay">
+        <!-- Step 1: Name -->
+        <div class="onboarding-step active" id="step-name">
+            <h1 style="color: var(--brand-primary); margin-bottom: 1rem;">Welcome Aboard</h1>
+            <p>What should we call you? (Formal or First name)</p>
+            <input type="text" id="onboard-name" class="auth-input" style="margin-top: 2rem;" placeholder="Your Name">
+            <button class="action-btn" style="margin-top: 1rem;" onclick="nextStep(2)">Next</button>
+        </div>
+
+        <!-- Step 2: Tone -->
+        <div class="onboarding-step" id="step-tone">
+            <h1>Select Your Tone</h1>
+            <p>How should CareerReady AI interact with you?</p>
+            <div class="tone-grid">
+                <div class="tone-opt" onclick="selectTone(this, 'friendly')">
+                    <h3>😊 Friendly</h3>
+                    <p style="font-size: 0.8rem;">Warm, casual, and encouraging.</p>
+                </div>
+                <div class="tone-opt selected" onclick="selectTone(this, 'professional')">
+                    <h3>💼 Professional</h3>
+                    <p style="font-size: 0.8rem;">Direct, sharp, and structured.</p>
+                </div>
+                <div class="tone-opt" onclick="selectTone(this, 'funny')">
+                    <h3>🤣 Funny</h3>
+                    <p style="font-size: 0.8rem;">Witty, lighthearted, and fun.</p>
+                </div>
+                <div class="tone-opt" onclick="selectTone(this, 'strict')">
+                    <h3>🏛️ Strict</h3>
+                    <p style="font-size: 0.8rem;">Formal, serious oversight.</p>
+                </div>
+            </div>
+            <button class="action-btn" style="margin-top: 2rem;" onclick="nextStep(3)">Next</button>
+        </div>
+
+        <!-- Step 3: Goal -->
+        <div class="onboarding-step" id="step-goal">
+            <h1>Personalize Your Path</h1>
+            <p>What's your primary goal right now?</p>
+            <textarea id="onboard-goal" class="auth-input" rows="3" style="margin-top: 2rem;"
+                placeholder="e.g., Landing a Senior Frontend Engineer role in Big Tech..."></textarea>
+            <button class="action-btn" style="margin-top: 1rem;" onclick="finishOnboarding()">Start Advancing</button>
+        </div>
+    </div>
     <aside class="sidebar">
         <div class="brand-text" style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--text-high)">
             EXECUTIVE<br /><span style="color: var(--brand-primary)">ADVISOR</span>
@@ -539,8 +738,12 @@
         </div>
 
         <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border)">
-            <div style="font-size: 0.75rem; color: var(--text-med)">LOGGED IN AS</div>
-            <div style="font-weight: 600; font-size: 0.9rem">Elite Candidate</div>
+            <div style="margin-top: 1rem; padding-top: 1rem;">
+                <div style="font-size: 0.75rem; color: var(--text-med)">LOGGED IN AS</div>
+                <div id="current-user-display" style="font-weight: 600; font-size: 0.9rem">Guest</div>
+                <a href="#" onclick="signOut()"
+                    style="font-size: 0.65rem; color: var(--brand-primary); text-decoration: none;">Sign Out</a>
+            </div>
         </div>
     </aside>
 
@@ -627,55 +830,93 @@
         const input = document.getElementById('user-input');
         const btn = document.getElementById('send-btn');
 
-        // Session Persistence
+        // State Management
+        let currentUser = JSON.parse(localStorage.getItem('careerready_user'));
         let currentSessionId = localStorage.getItem('careerready_session_id');
         let conversationHistory = [];
+        let selectedTone = 'professional';
         const MAX_HISTORY = 10;
+        let sessionToDelete = null;
 
-        // Initialize
-        window.addEventListener('load', () => {
-            loadSessions();
-            if (currentSessionId) {
-                resumeSession(currentSessionId);
-            }
-        });
-
+        // Session Management
         async function loadSessions() {
+            if (!currentUser) return;
             try {
-                const response = await fetch('http://localhost:8080/api/chat/sessions');
+                const response = await fetch(`http://localhost:8080/api/chat/sessions?username=${encodeURIComponent(currentUser.username)}`);
                 const sessions = await response.json();
-                renderSidebar(sessions);
+                renderHistory(sessions);
             } catch (err) {
-                console.error("Failed to load sessions:", err);
+                console.error("Failed to load sessions", err);
             }
         }
 
-        function renderSidebar(sessions) {
+        function renderHistory(sessions) {
             const list = document.getElementById('history-list');
-            list.innerHTML = sessions.map(s => `
-                <div class="history-item ${s.id === currentSessionId ? 'active' : ''}" 
-                     onclick="switchSession('${s.id}')">
-                    <span style="overflow: hidden; text-overflow: ellipsis;">${s.title}</span>
-                    <span class="delete-session-btn" onclick="event.stopPropagation(); deleteSession('${s.id}')" title="Delete Session">✕</span>
+            list.innerHTML = '';
+            sessions.slice().reverse().forEach(session => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span onclick="resumeSession('${session.id}')" style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            ${session.title || 'Untitled Session'}
+                        </span>
+                        <span onclick="confirmDeleteSession(event, '${session.id}')" style="color: #ff4d4d; font-size: 0.8rem; margin-left: 8px;">✕</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        async function resumeSession(sessionId) {
+            currentSessionId = sessionId;
+            localStorage.setItem('careerready_session_id', sessionId);
+            container.innerHTML = '';
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/chat/sessions/${sessionId}`);
+                const data = await response.json();
+
+                conversationHistory = [];
+                data.content.forEach(msg => {
+                    const normalizedRole = msg.role === 'assistant' ? 'ai' : msg.role;
+                    renderMessage(normalizedRole, msg.content, true);
+                });
+                document.getElementById('suggestions').style.display = 'none';
+            } catch (err) {
+                renderMessage('ai', "Failed to resume session. Please check backend.");
+            }
+        }
+
+        function startNewChat() {
+            currentSessionId = null;
+            localStorage.removeItem('careerready_session_id');
+            conversationHistory = [];
+            container.innerHTML = `
+                <div class="message">
+                    <div class="meta role-ai">Executive Advisor</div>
+                    <div class="bubble ai markdown-content">
+                        Hello. I'm your Professional Career Advisor. How should we proceed with your advancement today?
+
+                        **I specialized in:**
+                        - Deep Resume Optimization
+                        - Strategic Mock Interviews
+                        - Salary Negotiation Frameworks
+                        - Executive Presence Coaching
+                    </div>
                 </div>
-            `).join('');
+            `;
+            document.getElementById('suggestions').style.display = 'grid';
+            autoScroll();
         }
 
         function startNewSession() {
-            currentSessionId = null;
-            localStorage.removeItem('careerready_session_id');
-            container.innerHTML = '';
-            conversationHistory = [];
-
-            // Add initial greeting
-            renderMessage('ai', "I'm ready for a new objective. What are we strategizing today?", false);
-            loadSessions();
+            startNewChat();
         }
 
-        let sessionToDelete = null;
-
-        async function deleteSession(id) {
-            sessionToDelete = id;
+        function confirmDeleteSession(e, sessionId) {
+            e.stopPropagation();
+            sessionToDelete = sessionId;
             document.getElementById('delete-modal').style.display = 'flex';
         }
 
@@ -686,54 +927,14 @@
 
         async function confirmDelete() {
             if (!sessionToDelete) return;
-
             try {
-                const response = await fetch(`http://localhost:8080/api/chat/sessions/${sessionToDelete}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    if (currentSessionId === sessionToDelete) {
-                        startNewSession();
-                    } else {
-                        loadSessions();
-                    }
-                }
-            } catch (err) {
-                console.error("Failed to delete session:", err);
-            } finally {
+                await fetch(`http://localhost:8080/api/chat/sessions/${sessionToDelete}`, { method: 'DELETE' });
+                if (currentSessionId === sessionToDelete) startNewChat();
+                loadSessions();
                 hideDeleteModal();
-            }
-        }
-
-        async function switchSession(id) {
-            currentSessionId = id;
-            localStorage.setItem('careerready_session_id', id);
-            container.innerHTML = ''; // Clear current chat
-
-            try {
-                const response = await fetch(`http://localhost:8080/api/chat/sessions/${id}?page=0&size=50`);
-                const data = await response.json();
-
-                // Clear and render messages from DB
-                conversationHistory = [];
-                data.content.forEach(msg => {
-                    renderMessage(msg.role === 'assistant' ? 'ai' : 'user', msg.content, false);
-                });
-
-                loadSessions(); // Update active state
             } catch (err) {
-                console.error("Failed to switch session:", err);
+                alert("Delete failed");
             }
-        }
-
-        function resumeSession(id) {
-            switchSession(id);
-        }
-
-        function resizeInput(el) {
-            el.style.height = 'auto';
-            el.style.height = el.scrollHeight + 'px';
         }
 
         function usePrompt(text) {
@@ -742,7 +943,111 @@
             input.focus();
         }
 
-        function startNewChat() {
+        function resizeInput(el) {
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight) + 'px';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            if (currentUser) {
+                hideAuth();
+                document.getElementById('current-user-display').textContent = currentUser.username;
+                loadSessions();
+                if (currentSessionId) resumeSession(currentSessionId);
+            }
+        });
+
+        // Auth Logic
+        function toggleAuthMode(isSignup) {
+            document.getElementById('login-form').style.display = isSignup ? 'none' : 'block';
+            document.getElementById('signup-form').style.display = isSignup ? 'block' : 'none';
+        }
+
+        async function handleAuth(mode) {
+            const user = mode === 'signup' ? document.getElementById('reg-user').value : document.getElementById('auth-user').value;
+            const pass = mode === 'signup' ? document.getElementById('reg-pass').value : document.getElementById('auth-pass').value;
+
+            if (!user || !pass) return alert("Please fill all fields");
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/auth/${mode}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    currentUser = data.user;
+                    localStorage.setItem('careerready_user', JSON.stringify(currentUser));
+
+                    if (mode === 'signup') {
+                        showOnboarding();
+                    } else {
+                        hideAuth();
+                        window.location.reload();
+                    }
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert("Auth failed: " + err.message);
+            }
+        }
+
+        function hideAuth() {
+            document.getElementById('auth-overlay').style.display = 'none';
+        }
+
+        function showOnboarding() {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('onboarding-overlay').style.display = 'flex';
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.onboarding-step').forEach(s => s.classList.remove('active'));
+            if (step === 2) document.getElementById('step-tone').classList.add('active');
+            if (step === 3) document.getElementById('step-goal').classList.add('active');
+        }
+
+        function selectTone(el, tone) {
+            document.querySelectorAll('.tone-opt').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedTone = tone;
+        }
+
+        async function finishOnboarding() {
+            const name = document.getElementById('onboard-name').value;
+            const goal = document.getElementById('onboard-goal').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/update-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: currentUser.username,
+                        fullName: name,
+                        tonePreference: selectedTone,
+                        addressPreference: "Professional",
+                        purpose: goal
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    currentUser = data.user;
+                    localStorage.setItem('careerready_user', JSON.stringify(currentUser));
+                    document.getElementById('onboarding-overlay').style.display = 'none';
+                    window.location.reload();
+                }
+            } catch (err) {
+                alert("Onboarding failed");
+            }
+        }
+
+        // UI Features
+        function signOut() {
+            localStorage.clear();
             window.location.reload();
         }
 
@@ -750,10 +1055,7 @@
             const text = input.value.trim();
             if (!text) return;
 
-            // Hide suggestions after first message
             document.getElementById('suggestions').style.display = 'none';
-
-            // Append User Message
             renderMessage('user', text);
             input.value = '';
             resizeInput(input);
@@ -767,8 +1069,9 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         message: text,
-                        history: conversationHistory.slice(-MAX_HISTORY), // Send last N messages
-                        sessionId: currentSessionId
+                        history: conversationHistory.slice(-MAX_HISTORY),
+                        sessionId: currentSessionId,
+                        username: currentUser ? currentUser.username : null
                     })
                 });
 
@@ -776,20 +1079,16 @@
                 hideLoading(loadingId);
 
                 if (data.success) {
-                    // Update session ID if it was a new session
                     if (!currentSessionId && data.sessionId) {
                         currentSessionId = data.sessionId;
                         localStorage.setItem('careerready_session_id', data.sessionId);
                     }
                     renderMessage('ai', data.message);
-                    loadSessions(); // Refresh sidebar title
-                } else {
-                    renderMessage('ai', `**Error Encountered:** ${data.error || 'The intelligence core returned an an invalid response.'}`);
+                    loadSessions();
                 }
             } catch (err) {
                 hideLoading(loadingId);
-                renderMessage('ai', `**Architecture Error:** Unable to reach the backend services. Ensure the Spring Boot server is operational at \`localhost:8080\`.`);
-                console.error(err);
+                renderMessage('ai', `**Error:** Check backend connectivity.`);
             } finally {
                 btn.disabled = false;
                 autoScroll();
@@ -800,24 +1099,37 @@
             const msgObj = document.createElement('div');
             msgObj.className = 'message';
 
-            const displayRole = role === 'user' ? 'Candidate' : 'Executive Advisor';
-            const bubbleClass = role === 'user' ? 'user' : 'ai';
+            const displayRole = role === 'user' ? (currentUser?.fullName || 'Candidate') : 'Executive Advisor';
+
+            // Extract suggested questions from AI text
+            let cleanText = rawText;
+            let suggestions = [];
+            if (role === 'ai') {
+                const match = rawText.match(/\[SUGGESTED: (.*)\]/);
+                if (match) {
+                    try {
+                        suggestions = JSON.parse(match[1]);
+                        cleanText = rawText.replace(match[0], '');
+                    } catch (e) { }
+                }
+            }
 
             msgObj.innerHTML = `
                 <div class="meta role-${role}">${displayRole}</div>
-                <div class="bubble ${bubbleClass} markdown-content">
-                    ${role === 'ai' ? marked.parse(rawText) : rawText}
+                <div class="bubble ${role} markdown-content">
+                    ${role === 'ai' ? marked.parse(cleanText) : cleanText}
+                    ${role === 'ai' && suggestions.length > 0 ? `
+                        <div class="suggested-questions">
+                            ${suggestions.map(q => `<button class="suggested-btn" onclick="usePrompt('${q.replace(/'/g, "\\'")}'); handleSend()">${q}</button>`).join('')}
+                        </div>
+                    ` : ''}
                 </div>
             `;
 
             container.appendChild(msgObj);
-
             if (saveToHistory) {
-                // Add to history (map 'ai' to 'assistant' for API compatibility)
-                const apiRole = role === 'ai' ? 'assistant' : role;
-                conversationHistory.push({ role: apiRole, content: rawText });
+                conversationHistory.push({ role: role === 'ai' ? 'assistant' : role, content: rawText });
             }
-
             autoScroll();
         }
 
