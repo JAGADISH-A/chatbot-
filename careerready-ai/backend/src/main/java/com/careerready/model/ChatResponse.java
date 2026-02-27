@@ -13,4 +13,5 @@ public class ChatResponse {
     private String message;
     private boolean success;
     private String error;
+    private String sessionId;
 }

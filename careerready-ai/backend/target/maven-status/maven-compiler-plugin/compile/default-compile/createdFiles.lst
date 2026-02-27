@@ -1,6 +1,14 @@
 com\careerready\CareerReadyApplication.class
+com\careerready\entity\ChatMessageEntity$ChatMessageEntityBuilder.class
+com\careerready\controller\ChatController.class
+com\careerready\model\ChatMessage.class
+com\careerready\entity\ChatMessageEntity.class
+com\careerready\service\ChatPersistenceService.class
 com\careerready\service\GroqService.class
 com\careerready\model\ChatRequest.class
 com\careerready\model\ChatResponse.class
-com\careerready\controller\ChatController.class
+com\careerready\repository\ChatSessionRepository.class
+com\careerready\entity\ChatSession.class
 com\careerready\model\ChatResponse$ChatResponseBuilder.class
+com\careerready\repository\ChatMessageRepository.class
+com\careerready\entity\ChatSession$ChatSessionBuilder.class

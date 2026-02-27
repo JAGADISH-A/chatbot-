@@ -33,31 +33,40 @@ public class GroqService {
         this.restTemplate = new RestTemplate(factory);
     }
 
-    public ChatResponse getAiResponse(String userMessage) {
+    public ChatResponse getAiResponse(String userMessage, List<com.careerready.model.ChatMessage> history) {
         System.out.println("Processing request for model: " + modelName);
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setBearerAuth(apiKey);
-
+ 
             Map<String, Object> body = new HashMap<>();
             body.put("model", modelName);
-
+ 
             List<Map<String, String>> messages = new ArrayList<>();
+            // System Prompt from user request
             messages.add(Map.of("role", "system", "content", 
-                "You are CareerReady AI, a friendly and professional career advisor for students. " +
-                "You specialize in resume writing, interview preparation, soft skills, networking, LinkedIn tips, workplace stress, and career planning. " +
-                "Keep answers clear, practical, encouraging, and concise. Use bullet points where helpful. " +
-                "If asked something unrelated to career topics, politely redirect back to career advice."));
+                "You are an expert career advisor for CareerReady AI. You have memory of this conversation session. " +
+                "Remember what the user has shared (their job, goals, resume details). Avoid repeating yourself. " +
+                "Build on previous advice naturally. Respond like a sharp executive coach — concise, direct, and actionable."));
+            
+            // Add History
+            if (history != null) {
+                for (com.careerready.model.ChatMessage msg : history) {
+                    messages.add(Map.of("role", msg.getRole(), "content", msg.getContent()));
+                }
+            }
+
+            // Current message
             messages.add(Map.of("role", "user", "content", userMessage));
-
+ 
             body.put("messages", messages);
-
+ 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-
+ 
             Map<String, Object> response = restTemplate.postForObject(GROQ_URL, entity, Map.class);
             System.out.println("Received response from Groq");
-
+ 
             if (response != null && response.containsKey("choices")) {
                 List<Map<String, Object>> choices = (List<Map<String, Object>>) response.get("choices");
                 if (!choices.isEmpty()) {
@@ -66,16 +75,17 @@ public class GroqService {
                     return ChatResponse.builder()
                             .message(content)
                             .success(true)
+                            .sessionId(history != null && !history.isEmpty() ? null : null) // Placeholder, actual ID handled in controller
                             .build();
                 }
             }
-
+ 
             return ChatResponse.builder()
                     .message("No response from AI")
                     .success(false)
                     .error("Empty response from Groq API")
                     .build();
-
+ 
         } catch (Exception e) {
             System.err.println("Error calling Groq: " + e.getMessage());
             e.printStackTrace();
