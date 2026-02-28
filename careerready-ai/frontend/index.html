@@ -644,6 +644,129 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-sharp);
         }
+
+        /* Mascot Enhancements (Option B) */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px) rotate(-1deg);
+            }
+
+            75% {
+                transform: translateX(5px) rotate(1deg);
+            }
+        }
+
+        .mascot-shake {
+            animation: shake 0.2s ease-in-out 0s 3;
+        }
+
+        .mascot-error-tint {
+            filter: grayscale(0.5) sepia(1) hue-rotate(-50deg) saturate(3);
+        }
+
+        .mascot-tip-bubble {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--brand-primary);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-curved);
+            font-size: 0.8rem;
+            width: 220px;
+            pointer-events: none;
+            opacity: 0;
+            transition: var(--transition-smooth);
+            z-index: 1000;
+            box-shadow: var(--shadow-float);
+        }
+
+        .mascot-tip-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px;
+            border-style: solid;
+            border-color: var(--brand-primary) transparent transparent transparent;
+        }
+
+        .mascot-tip-bubble.active {
+            opacity: 1;
+            bottom: 120%;
+        }
+
+        /* Static Mascot & Thinking Bubble (v4) */
+        @keyframes pulseBubble {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes floatMascot {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .mascot-floating {
+            animation: floatMascot 4s ease-in-out infinite;
+        }
+
+        .thinking-bubble {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 20px 20px 20px 4px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .thinking-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--brand-primary);
+            border-radius: 50%;
+            animation: pulseBubble 1s infinite;
+        }
+
+        .thinking-bubble.active {
+            display: flex;
+        }
+
+        .sidebar-mascot-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
     </style>
 </head>
 
@@ -706,6 +829,13 @@
                     <p style="font-size: 0.8rem;">Formal, serious oversight.</p>
                 </div>
             </div>
+            <div id="mascot-preview"
+                style="margin-top: 2rem; width: 120px; height: 120px; margin-inline: auto; border-radius: 50%; overflow: hidden; border: 3px solid var(--brand-primary); background: var(--bg-accent); display: flex; align-items: center; justify-content: center;">
+                <svg width="70" height="70" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4" fill="var(--text-med)" />
+                    <path d="M4 21c0-4.418 3.582-8 8-8s8 3.582 8 8" fill="var(--text-med)" />
+                </svg>
+            </div>
             <button class="action-btn" style="margin-top: 2rem;" onclick="nextStep(3)">Next</button>
         </div>
 
@@ -735,6 +865,17 @@
             <div id="history-list">
                 <!-- Dynamic sessions will be rendered here -->
             </div>
+        </div>
+
+        <div class="sidebar-mascot-container"
+            style="margin-bottom: 2rem; width: 100%; aspect-ratio: 1; border-radius: var(--radius-curved); overflow: hidden; border: 1px solid var(--border); background: var(--bg-deep); position: relative;">
+            <div id="mascot-tip" class="mascot-tip-bubble"></div>
+            <div id="sidebar-thinking-bubble" class="thinking-bubble">
+                <div class="thinking-dot"></div>
+                <div class="thinking-dot" style="animation-delay: 0.2s"></div>
+                <div class="thinking-dot" style="animation-delay: 0.4s"></div>
+            </div>
+            <img id="sidebar-mascot" src="" alt="Mascot" class="mascot-floating">
         </div>
 
         <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border)">
@@ -953,6 +1094,8 @@
             if (currentUser) {
                 hideAuth();
                 document.getElementById('current-user-display').textContent = currentUser.username;
+                selectedTone = currentUser.tonePreference || 'professional';
+                updateMascotUI('WELCOME'); // Initial Greeting State
                 loadSessions();
                 if (currentSessionId) resumeSession(currentSessionId);
             }
@@ -986,6 +1129,7 @@
                         showOnboarding();
                     } else {
                         hideAuth();
+                        updateMascotUI();
                         window.location.reload();
                     }
                 } else {
@@ -1011,10 +1155,51 @@
             if (step === 3) document.getElementById('step-goal').classList.add('active');
         }
 
+        const toneToMascot = {
+            'friendly': '../assets/cheering.jpg',
+            'professional': '../assets/confident.jpg',
+            'funny': '../assets/welcome.jpg',
+            'strict': '../assets/thinking.jpg'
+        };
+
         function selectTone(el, tone) {
             document.querySelectorAll('.tone-opt').forEach(opt => opt.classList.remove('selected'));
             el.classList.add('selected');
             selectedTone = tone;
+
+            const preview = document.getElementById('mascot-preview');
+            if (preview && toneToMascot[tone]) {
+                preview.innerHTML = `<img src="${toneToMascot[tone]}" alt="Cari" style="width:100%;height:100%;object-fit:cover;">`;
+            }
+        }
+
+        function updateMascotUI(state = currentMascotState) {
+            currentMascotState = state;
+            const src = getMascotSrc(state);
+            const preview = document.getElementById('mascot-preview');
+            const sidebar = document.getElementById('sidebar-mascot');
+            const thinkingBubble = document.getElementById('sidebar-thinking-bubble');
+
+            if (preview) preview.src = src;
+
+            if (sidebar) {
+                sidebar.src = src;
+
+                // Toggle Thinking Bubble
+                if (state === 'THINKING') {
+                    thinkingBubble?.classList.add('active');
+                } else {
+                    thinkingBubble?.classList.remove('active');
+                }
+
+                // Handle Error state visuals
+                if (state === 'ERROR') {
+                    sidebar.classList.add('mascot-shake', 'mascot-error-tint');
+                    setTimeout(() => sidebar.classList.remove('mascot-shake'), 1000);
+                } else {
+                    sidebar.classList.remove('mascot-error-tint', 'mascot-shake');
+                }
+            }
         }
 
         async function finishOnboarding() {
@@ -1083,23 +1268,97 @@
                         currentSessionId = data.sessionId;
                         localStorage.setItem('careerready_session_id', data.sessionId);
                     }
-                    renderMessage('ai', data.message);
+
+                    const state = detectMascotState(text);
+                    updateMascotUI(state);
+                    renderMessage('ai', data.message, true, state);
                     loadSessions();
                 }
             } catch (err) {
                 hideLoading(loadingId);
-                renderMessage('ai', `**Error:** Check backend connectivity.`);
+                updateMascotUI('ERROR');
+                renderMessage('ai', `**Error:** Check backend connectivity.`, false, 'ERROR');
             } finally {
                 btn.disabled = false;
                 autoScroll();
             }
         }
 
-        function renderMessage(role, rawText, saveToHistory = true) {
+        const mascotMapping = {
+            'THINKING': '../assets/thinking.jpg',
+            'ANSWERING': '../assets/confident.jpg',
+            'CONFIDENT': '../assets/confident.jpg',
+            'ENCOURAGING': '../assets/cheering.jpg',
+            'CELEBRATING': '../assets/cheering.jpg',
+            'LISTENING': '../assets/listening.jpg',
+            'IDLE': '../assets/listening.jpg',
+            'WELCOME': '../assets/welcome.jpg',
+            'ERROR': '../assets/error.jpg',
+            'RESUME_AUDIT': '../assets/resume_audit.png',
+            'INTERVIEW_MODE': '../assets/interview_mode.png',
+            'SALARY_TALK': '../assets/salary_talk.png',
+            'MOCK_INTERVIEW': '../assets/mock_interview.png'
+        };
+
+        function detectMascotState(text) {
+            const lower = text.toLowerCase();
+            const rules = [
+                { keywords: ['resume', 'cv', 'ats', 'cover letter'], state: 'RESUME_AUDIT' },
+                { keywords: ['mock interview', 'interview prep', 'interview practice'], state: 'MOCK_INTERVIEW' },
+                { keywords: ['interview', 'hr round', 'technical round'], state: 'INTERVIEW_MODE' },
+                { keywords: ['salary', 'negotiation', 'offer', 'package', 'ctc', 'compensation'], state: 'SALARY_TALK' },
+                { keywords: ['linkedin', 'networking', 'job search', 'job board', 'naukri', 'internshala'], state: 'ENCOURAGING' },
+            ];
+            for (const rule of rules) {
+                if (rule.keywords.some(kw => lower.includes(kw))) return rule.state;
+            }
+            return 'ANSWERING';
+        }
+
+        let currentMascotState = 'IDLE';
+        let tipTimer = null;
+
+        const careerTips = [
+            "Tailor your resume for every job application! 🎯",
+            "Research the company's culture before your interview. 🏢",
+            "Always follow up with a thank-you note after an interview. ✉️",
+            "Quantify your achievements with numbers and metrics. 📊",
+            "Practice your elevator pitch until it sounds natural. 🗣️",
+            "Keep your LinkedIn profile up to date. 💼"
+        ];
+
+        function getMascotSrc(state = currentMascotState) {
+            return mascotMapping[state] || mascotMapping['IDLE'];
+        }
+
+        function showMascotTip() {
+            const tipEl = document.getElementById('mascot-tip');
+            if (!tipEl) return;
+
+            const randomTip = careerTips[Math.floor(Math.random() * careerTips.length)];
+            tipEl.textContent = randomTip;
+            tipEl.classList.add('active');
+
+            setTimeout(() => {
+                tipEl.classList.remove('active');
+            }, 6000);
+        }
+
+        // Start periodic tips
+        setInterval(showMascotTip, 45000);
+
+        function renderMessage(role, rawText, saveToHistory = true, stateOverride = null) {
             const msgObj = document.createElement('div');
             msgObj.className = 'message';
 
             const displayRole = role === 'user' ? (currentUser?.fullName || 'Candidate') : 'Executive Advisor';
+
+            // Determine state for AI messages
+            let mascotState = stateOverride;
+            if (role === 'ai' && !mascotState) {
+                mascotState = 'ANSWERING';
+            }
+            const mascotSrc = getMascotSrc(mascotState);
 
             // Extract suggested questions from AI text
             let cleanText = rawText;
@@ -1116,13 +1375,20 @@
 
             msgObj.innerHTML = `
                 <div class="meta role-${role}">${displayRole}</div>
-                <div class="bubble ${role} markdown-content">
-                    ${role === 'ai' ? marked.parse(cleanText) : cleanText}
-                    ${role === 'ai' && suggestions.length > 0 ? `
-                        <div class="suggested-questions">
-                            ${suggestions.map(q => `<button class="suggested-btn" onclick="usePrompt('${q.replace(/'/g, "\\'")}'); handleSend()">${q}</button>`).join('')}
+                <div class="bubble ${role} markdown-content" style="display: flex; gap: 1rem; align-items: flex-start;">
+                    ${role === 'ai' ? `
+                        <div class="mascot-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 2px solid var(--brand-primary); flex-shrink: 0; position: relative;">
+                            <img src="${mascotSrc}" alt="Advisor" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     ` : ''}
+                    <div style="flex: 1;">
+                        ${role === 'ai' ? marked.parse(cleanText) : cleanText}
+                        ${role === 'ai' && suggestions.length > 0 ? `
+                            <div class="suggested-questions">
+                                ${suggestions.map(q => `<button class="suggested-btn" onclick="usePrompt('${q.replace(/'/g, "\\'")}'); handleSend()">${q}</button>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
                 </div>
             `;
 
@@ -1131,6 +1397,11 @@
                 conversationHistory.push({ role: role === 'ai' ? 'assistant' : role, content: rawText });
             }
             autoScroll();
+
+            // Set idle state after a delay if it was a celebration
+            if (mascotState === 'CELEBRATING') {
+                setTimeout(() => updateMascotUI('IDLE'), 5000);
+            }
         }
 
         function showLoading() {
@@ -1138,12 +1409,20 @@
             const loader = document.createElement('div');
             loader.className = 'message';
             loader.id = id;
+            const mascotSrc = getMascotSrc('THINKING');
+            updateMascotUI('THINKING');
+
             loader.innerHTML = `
                 <div class="meta role-ai">Advisor Thinking</div>
-                <div class="loading">
-                    <div class="pulse"></div>
-                    <div class="pulse" style="animation-delay: 0.2s"></div>
-                    <div class="pulse" style="animation-delay: 0.4s"></div>
+                <div class="bubble ai" style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="mascot-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 2px solid var(--brand-primary); flex-shrink: 0;">
+                        <img src="${mascotSrc}" alt="Thinking" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="loading">
+                        <div class="pulse"></div>
+                        <div class="pulse" style="animation-delay: 0.2s"></div>
+                        <div class="pulse" style="animation-delay: 0.4s"></div>
+                    </div>
                 </div>
             `;
             container.appendChild(loader);
