@@ -12,4 +12,5 @@ public class ChatRequest {
     private String message;
     private List<ChatMessage> history;
     private String sessionId;
+    private String username;
 }

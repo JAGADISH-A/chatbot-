@@ -24,22 +24,23 @@ public class ChatPersistenceService {
     }
 
     @Transactional
-    public ChatSession createSession(String initialTitle) {
+    public ChatSession createSession(String initialTitle, com.careerready.entity.User user) {
         ChatSession session = ChatSession.builder()
                 .id(UUID.randomUUID().toString())
                 .title(initialTitle != null ? truncateTitle(initialTitle) : "New Session")
+                .user(user)
                 .build();
         return sessionRepository.save(session);
     }
 
     @Transactional
-    public ChatSession saveMessage(String sessionId, String role, String content) {
+    public ChatSession saveMessage(String sessionId, String role, String content, com.careerready.entity.User user) {
         ChatSession session;
         if (sessionId == null || sessionId.trim().isEmpty()) {
-            session = createSession(content);
+            session = createSession(content, user);
         } else {
             session = sessionRepository.findById(sessionId)
-                    .orElseGet(() -> createSession(content));
+                    .orElseGet(() -> createSession(content, user));
         }
         
         ChatMessageEntity message = ChatMessageEntity.builder()
@@ -58,8 +59,9 @@ public class ChatPersistenceService {
         return session;
     }
 
-    public List<ChatSession> getAllSessions() {
-        return sessionRepository.findAll();
+    public List<ChatSession> getSessionsByUser(String username) {
+        if (username == null) return List.of();
+        return sessionRepository.findByUserUsernameOrderByCreatedAtDesc(username);
     }
 
     public Page<ChatMessageEntity> getSessionHistory(String sessionId, int page, int size) {

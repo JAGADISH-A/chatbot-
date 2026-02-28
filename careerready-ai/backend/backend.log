@@ -1,0 +1,168 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.careerready:careerready-ai >-------------------
+[INFO] Building careerready-ai 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.2.3:run (default-cli) > test-compile @ careerready-ai >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ careerready-ai ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ careerready-ai ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 16 source files with javac [debug release 17] to target\classes
+[INFO] /C:/Users/jagan/Desktop/chatbot/careerready-ai/backend/src/main/java/com/careerready/service/GroqService.java: C:\Users\jagan\Desktop\chatbot\careerready-ai\backend\src\main\java\com\careerready\service\GroqService.java uses unchecked or unsafe operations.
+[INFO] /C:/Users/jagan/Desktop/chatbot/careerready-ai/backend/src/main/java/com/careerready/service/GroqService.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ careerready-ai ---
+[INFO] skip non existing resourceDirectory C:\Users\jagan\Desktop\chatbot\careerready-ai\backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ careerready-ai ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< spring-boot:3.2.3:run (default-cli) < test-compile @ careerready-ai <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.2.3:run (default-cli) @ careerready-ai ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2026-02-27T21:30:47.516+05:30  INFO 7424 --- [  restartedMain] com.careerready.CareerReadyApplication   : Starting CareerReadyApplication using Java 17 with PID 7424 (C:\Users\jagan\Desktop\chatbot\careerready-ai\backend\target\classes started by jagan in C:\Users\jagan\Desktop\chatbot\careerready-ai\backend)
+2026-02-27T21:30:47.566+05:30  INFO 7424 --- [  restartedMain] com.careerready.CareerReadyApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-02-27T21:30:47.651+05:30  INFO 7424 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-27T21:30:47.657+05:30  INFO 7424 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-27T21:30:48.838+05:30  INFO 7424 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-27T21:30:48.938+05:30  INFO 7424 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 87 ms. Found 3 JPA repository interfaces.
+2026-02-27T21:30:50.263+05:30  INFO 7424 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-02-27T21:30:50.330+05:30  INFO 7424 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-27T21:30:50.332+05:30  INFO 7424 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-02-27T21:30:50.451+05:30  INFO 7424 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-02-27T21:30:50.461+05:30  INFO 7424 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2798 ms
+2026-02-27T21:30:50.526+05:30  INFO 7424 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-27T21:30:50.994+05:30  INFO 7424 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/careerready_db user=SA
+2026-02-27T21:30:51.039+05:30  INFO 7424 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-27T21:30:51.060+05:30  INFO 7424 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/careerready_db'
+2026-02-27T21:30:51.313+05:30  INFO 7424 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-27T21:30:51.462+05:30  INFO 7424 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-02-27T21:30:51.524+05:30  INFO 7424 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-02-27T21:30:52.014+05:30  INFO 7424 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-27T21:30:52.146+05:30  WARN 7424 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-27T21:30:53.824+05:30  INFO 7424 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-27T21:30:53.958+05:30  INFO 7424 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-27T21:30:54.683+05:30  WARN 7424 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-27T21:30:55.213+05:30  INFO 7424 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-02-27T21:30:55.311+05:30  INFO 7424 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2026-02-27T21:30:55.334+05:30  INFO 7424 --- [  restartedMain] com.careerready.CareerReadyApplication   : Started CareerReadyApplication in 8.496 seconds (process running for 9.341)
+2026-02-27T21:31:37.741+05:30  INFO 7424 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-27T21:31:37.781+05:30  INFO 7424 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-27T21:31:37.784+05:30  INFO 7424 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id,m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_sessions cs1_0 left join chat_messages m1_0 on cs1_0.id=m1_0.session_id where cs1_0.id=? order by m1_0.timestamp
+Hibernate: insert into chat_sessions (created_at,title,user_id,id) values (?,?,?,?)
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Processing request for model: llama-3.3-70b-versatile
+Received response from Groq
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: select m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_messages m1_0 where m1_0.session_id=? order by m1_0.timestamp
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_sessions where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: select m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_messages m1_0 where m1_0.session_id=? order by m1_0.timestamp
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_sessions where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: select m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_messages m1_0 where m1_0.session_id=? order by m1_0.timestamp
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_sessions where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: select m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_messages m1_0 where m1_0.session_id=? order by m1_0.timestamp
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_sessions where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: select m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_messages m1_0 where m1_0.session_id=? order by m1_0.timestamp
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_sessions where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id,m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_sessions cs1_0 left join chat_messages m1_0 on cs1_0.id=m1_0.session_id where cs1_0.id=? order by m1_0.timestamp
+Hibernate: insert into chat_sessions (created_at,title,user_id,id) values (?,?,?,?)
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Processing request for model: llama-3.3-70b-versatile
+Received response from Groq
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Processing request for model: llama-3.3-70b-versatile
+Received response from Groq
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: select m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_messages m1_0 where m1_0.session_id=? order by m1_0.timestamp
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_messages where id=?
+Hibernate: delete from chat_sessions where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: insert into users (address_preference,full_name,password,purpose,tone_preference,username,id) values (?,?,?,?,?,?,default)
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: update users set address_preference=?,full_name=?,password=?,purpose=?,tone_preference=?,username=? where id=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id,m1_0.session_id,m1_0.id,m1_0.content,m1_0.role,m1_0.timestamp from chat_sessions cs1_0 left join chat_messages m1_0 on cs1_0.id=m1_0.session_id where cs1_0.id=? order by m1_0.timestamp
+Hibernate: insert into chat_sessions (created_at,title,user_id,id) values (?,?,?,?)
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Processing request for model: llama-3.3-70b-versatile
+Received response from Groq
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Processing request for model: llama-3.3-70b-versatile
+Received response from Groq
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+Hibernate: select u1_0.id,u1_0.address_preference,u1_0.full_name,u1_0.password,u1_0.purpose,u1_0.tone_preference,u1_0.username from users u1_0 where u1_0.username=?
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 where cs1_0.id=?
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Processing request for model: llama-3.3-70b-versatile
+Received response from Groq
+Hibernate: insert into chat_messages (content,role,session_id,timestamp,id) values (?,?,?,?,default)
+Hibernate: select cs1_0.id,cs1_0.created_at,cs1_0.title,cs1_0.user_id from chat_sessions cs1_0 left join users u1_0 on u1_0.id=cs1_0.user_id where u1_0.username=? order by cs1_0.created_at desc
+2026-02-27T21:48:35.141+05:30  WARN 7424 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m13s783ms977µs200ns).

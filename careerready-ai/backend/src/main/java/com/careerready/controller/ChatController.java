@@ -17,10 +17,12 @@ public class ChatController {
 
     private final GroqService groqService;
     private final ChatPersistenceService persistenceService;
+    private final com.careerready.repository.UserRepository userRepository;
 
-    public ChatController(GroqService groqService, ChatPersistenceService persistenceService) {
+    public ChatController(GroqService groqService, ChatPersistenceService persistenceService, com.careerready.repository.UserRepository userRepository) {
         this.groqService = groqService;
         this.persistenceService = persistenceService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping
@@ -33,15 +35,21 @@ public class ChatController {
                     .build();
         }
 
-        // 1. Save User Message
-        ChatSession session = persistenceService.saveMessage(request.getSessionId(), "user", request.getMessage());
+        // 1. Resolve User (if any)
+        com.careerready.entity.User user = null;
+        if (request.getUsername() != null) {
+            user = userRepository.findByUsername(request.getUsername()).orElse(null);
+        }
 
-        // 2. Get AI Response
-        ChatResponse response = groqService.getAiResponse(request.getMessage(), request.getHistory());
+        // 2. Save User Message (Link to User)
+        com.careerready.entity.ChatSession session = persistenceService.saveMessage(request.getSessionId(), "user", request.getMessage(), user);
 
-        // 3. Save AI Message & Return Session ID
+        // 3. Get AI Response with User Context
+        ChatResponse response = groqService.getAiResponse(request.getMessage(), request.getHistory(), user);
+
+        // 4. Save AI Message & Return Session ID
         if (response.isSuccess()) {
-            persistenceService.saveMessage(session.getId(), "assistant", response.getMessage());
+            persistenceService.saveMessage(session.getId(), "assistant", response.getMessage(), user);
             response.setSessionId(session.getId());
         }
 
@@ -49,8 +57,8 @@ public class ChatController {
     }
 
     @GetMapping("/sessions")
-    public List<ChatSession> getAllSessions() {
-        return persistenceService.getAllSessions();
+    public List<ChatSession> getAllSessions(@RequestParam(required = false) String username) {
+        return persistenceService.getSessionsByUser(username);
     }
 
     @GetMapping("/sessions/{id}")
