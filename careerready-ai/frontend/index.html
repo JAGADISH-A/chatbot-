@@ -971,6 +971,11 @@
         const input = document.getElementById('user-input');
         const btn = document.getElementById('send-btn');
 
+        // API Configuration — change this after deploying backend to Railway
+        const API_BASE = window.location.hostname === 'localhost' || window.location.protocol === 'file:'
+            ? 'http://localhost:8080'
+            : 'https://YOUR-RAILWAY-APP.up.railway.app';  // ← Replace with your Railway URL after deploy
+
         // State Management
         let currentUser = JSON.parse(localStorage.getItem('careerready_user'));
         let currentSessionId = localStorage.getItem('careerready_session_id');
@@ -983,7 +988,7 @@
         async function loadSessions() {
             if (!currentUser) return;
             try {
-                const response = await fetch(`http://localhost:8080/api/chat/sessions?username=${encodeURIComponent(currentUser.username)}`);
+                const response = await fetch(`${API_BASE}/api/chat/sessions?username=${encodeURIComponent(currentUser.username)}`);
                 const sessions = await response.json();
                 renderHistory(sessions);
             } catch (err) {
@@ -1015,7 +1020,7 @@
             container.innerHTML = '';
 
             try {
-                const response = await fetch(`http://localhost:8080/api/chat/sessions/${sessionId}`);
+                const response = await fetch(`${API_BASE}/api/chat/sessions/${sessionId}`);
                 const data = await response.json();
 
                 conversationHistory = [];
@@ -1069,7 +1074,7 @@
         async function confirmDelete() {
             if (!sessionToDelete) return;
             try {
-                await fetch(`http://localhost:8080/api/chat/sessions/${sessionToDelete}`, { method: 'DELETE' });
+                await fetch(`${API_BASE}/api/chat/sessions/${sessionToDelete}`, { method: 'DELETE' });
                 if (currentSessionId === sessionToDelete) startNewChat();
                 loadSessions();
                 hideDeleteModal();
@@ -1114,7 +1119,7 @@
             if (!user || !pass) return alert("Please fill all fields");
 
             try {
-                const response = await fetch(`http://localhost:8080/api/auth/${mode}`, {
+                const response = await fetch(`${API_BASE}/api/auth/${mode}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username: user, password: pass })
@@ -1207,7 +1212,7 @@
             const goal = document.getElementById('onboard-goal').value;
 
             try {
-                const response = await fetch('http://localhost:8080/api/auth/update-profile', {
+                const response = await fetch(`${API_BASE}/api/auth/update-profile`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1249,7 +1254,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch('http://localhost:8080/api/chat', {
+                const response = await fetch(`${API_BASE}/api/chat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
